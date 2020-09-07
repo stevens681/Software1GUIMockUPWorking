@@ -24,10 +24,10 @@ public class Inventory {
 
         if(flag){
             allParts.add(newPart); //This is the part the adds to the list
-            showMessageDialog(null, "good");
+
         }
         else {
-            showMessageDialog(null, "add part bad");
+
         }
 
     }

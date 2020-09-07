@@ -1,12 +1,18 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -20,6 +26,24 @@ public class Main extends Application {
 
     }
 
+    public static void callForms(ActionEvent actionEvent, String loadForm) throws IOException {
+
+        int w = 1300, h = 700;
+
+        if(loadForm.toLowerCase().equals("addpartform.fxml")) {
+            w = 600;
+            h = 800;
+        }
+
+        Parent addPartForm = FXMLLoader.load(Main.class.getResource(loadForm));
+        Stage form = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        form.setScene(new Scene(addPartForm, w, h));
+        form.show();
+
+    }
+
+
+
 
     public static void main(String[] args) {
         InHouse in = new InHouse(1,  "Part", 2.5, 5, 2, 7, 2);
@@ -29,5 +53,6 @@ public class Main extends Application {
         Product bookshelf = new Product(Inventory.getAllProducts(), 1, "Bookshelf", 199.99, 50, 1, 100);
         Inventory.addProduct(bookshelf);
         launch(args);
+
     }
 }

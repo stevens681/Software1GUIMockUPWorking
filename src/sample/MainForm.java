@@ -6,6 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.event.ActionEvent;
+
+
+import java.io.IOException;
+
 
 public class MainForm {
 //    @FXML
@@ -17,11 +22,20 @@ public class MainForm {
     private ObservableList<String> items = FXCollections.observableArrayList();
 
 
-    @FXML
-    public void initialize() {
 
-        colCreator("part");
-        colCreator("product");
+
+
+
+    @FXML
+    private void exit(ActionEvent actionEvent){
+        System.exit(0);
+    }
+
+    @FXML
+    public void addPartbtn(ActionEvent a) throws IOException {
+
+        Main.callForms(a, "AddPartForm.fxml");
+
 
     }
 
@@ -73,5 +87,13 @@ public class MainForm {
 
     }
 
+    @FXML
+    public void initialize() {
+
+        colCreator("part");
+        colCreator("product");
+        System.out.println("Working");
+
+    }
 
 }
