@@ -13,29 +13,24 @@ import java.io.IOException;
 
 
 public class MainForm {
-//    @FXML
-//    private TableView table = new TableView();
+
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
     private TableView<Product> prodTbl;     //Product Table
     private ObservableList<String> items = FXCollections.observableArrayList();
 
-
-
-
-
-
+    //Exit button
     @FXML
     private void exit(ActionEvent actionEvent){
         System.exit(0);
     }
 
+    //Opens the add part form
     @FXML
     public void addPartbtn(ActionEvent a) throws IOException {
 
         Main.callForms(a, "AddPartForm.fxml");
-
 
     }
 
@@ -66,6 +61,7 @@ public class MainForm {
             }
 
         }
+
         //This creates and fills the product tableView
          if(tbls.toLowerCase().equals("product")){
             prodTbl.setItems(Inventory.getAllProducts());       //Gets all the products
@@ -82,9 +78,6 @@ public class MainForm {
 
         }
 
-
-
-
     }
 
     @FXML
@@ -92,7 +85,6 @@ public class MainForm {
 
         colCreator("part");
         colCreator("product");
-        System.out.println("Working");
 
     }
 
