@@ -20,6 +20,8 @@ public class AddPartForm {
     @FXML
     private Text inOutLabel;
     @FXML
+    private TextField idText;
+    @FXML
     private TextField nameText;
     @FXML
     private TextField invText;
@@ -32,7 +34,7 @@ public class AddPartForm {
     @FXML
     private TextField macCopText;
 
-
+    int id = Inventory.getAllParts().size() + 1;        //This generates the ID
     //When the In-House radio button is selected
     @FXML
     private void inRadioBtn(ActionEvent e){
@@ -55,7 +57,7 @@ public class AddPartForm {
     @FXML
     private void saveBtn(ActionEvent e) throws IOException{
 
-        int id = Inventory.getAllParts().size() + 1;        //This generates the ID
+
 
         //This check for any empty fields
         if(emptyField()){
@@ -111,6 +113,7 @@ public class AddPartForm {
 
     @FXML
     public void initialize(){
+        idText.setText(Integer.toString(id));
         inHouRadio.setSelected(true);
 
 

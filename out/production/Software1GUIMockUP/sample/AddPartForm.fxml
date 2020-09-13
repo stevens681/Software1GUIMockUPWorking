@@ -13,7 +13,7 @@
       </Text>
       <RadioButton fx:id="outRadio" layoutX="300.0" layoutY="95.0" mnemonicParsing="false" onAction="#outRadioBtn" text="Outsourced" />
       <RadioButton fx:id="inHouRadio" layoutX="195.0" layoutY="95.0" mnemonicParsing="false" onAction="#inRadioBtn" text="In-House" />
-      <TextField disable="true" editable="false" layoutX="195.0" layoutY="149.0" promptText="Auto Gen- Disable">
+      <TextField fx:id="idText" disable="true" editable="false" layoutX="195.0" layoutY="149.0" promptText="Auto Gen- Disable">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
