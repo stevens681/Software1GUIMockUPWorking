@@ -10,6 +10,9 @@ public class Inventory {
     private static final ObservableList<Part> allParts = FXCollections.observableArrayList();
     private static final ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
+    /**
+     * Adds a part
+     * */
     public static void addPart(Part newPart) {
         boolean flag = true;
 
@@ -17,42 +20,68 @@ public class Inventory {
         for(Part pt: allParts){
             if(newPart.getName().toLowerCase().equals(pt.getName().toLowerCase())){
                 flag = false;
-                System.out.println("part " + allParts);
             }
         }
 
-
+        //If the part already exists displays a message
         if(flag){
             allParts.add(newPart); //This is the part the adds to the list
 
         }
         else {
-
+            showMessageDialog(null, "This part already exists!");
         }
 
     }
 
+    /**
+     * Adds a product
+     * */
     public static void addProduct(Product newProduct){
-        boolean flag = true;
 
-        for(Product pr: allProducts){
-            if(newProduct.getName().toLowerCase().equals(pr.getName().toLowerCase())){
-                flag = false;
-                System.out.println("This is inside the loop");
+            allProducts.add(newProduct);
 
+
+    }
+
+    /**
+     * Return the fields for a part
+     * */
+    public static Part lookupPart(int partId) {
+        for(Part part : Inventory.getAllParts()) {
+            if(part.getId() == partId) {
+                return part;
             }
         }
+        return null;
+    }
 
-        if (flag) {
-            allProducts.add(newProduct);
-            System.out.println("Product This is working");
-            showMessageDialog(null, "This is product");
+    /**
+     * Return the fields for a product
+     * */
+    public static Product lookupProduct(int productId) {
+        for(Product product : Inventory.getAllProducts()) {
+            if(product.getId() == productId) {
+                return product;
+            }
         }
-        else {
-            showMessageDialog(null, "bad");
+        return null;
+    }
 
-        }
+    public static void updatePart(int index, Part selectedPart) {
+        //update part
+    }
 
+    public static void updateProduct(int index, Product selectedProduct) {
+        //update product
+    }
+
+    public static void deletePart(Part selectedPart) {
+        allParts.remove(selectedPart);
+    }
+
+    public static void deleteProduct(Product selectedProduct) {
+        allProducts.remove(selectedProduct);
     }
 
     public static ObservableList<Part> getAllParts() {

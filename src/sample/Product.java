@@ -14,7 +14,6 @@ public class Product {
 
     public Product(ObservableList<Product> allProducts, int id, String name, double price, int stock, int min, int max){
 
-        //this.allProducts = allProducts;
         this.id = id;
         this.min = min;
         this.max = max;

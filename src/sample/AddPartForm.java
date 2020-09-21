@@ -66,11 +66,11 @@ public class AddPartForm {
             String name = nameText.getText();
             double price = Double.parseDouble(priceText.getText());
             int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
-                    max = Integer.parseInt(maxText.getText()), macID = Integer.parseInt(macCopText.getText());
+                    max = Integer.parseInt(maxText.getText());
 
             //Depending what radio button is selected this will add a part to in house or outsourced
             if(inHouRadio.isSelected()){
-
+                int macID = Integer.parseInt(macCopText.getText());
                 InHouse newPart = new InHouse(id, name, price, inv, min, max,macID);
                 Inventory.addPart(newPart);
 
@@ -113,7 +113,7 @@ public class AddPartForm {
 
     @FXML
     public void initialize(){
-        idText.setText(Integer.toString(id));
+
         inHouRadio.setSelected(true);
 
 
