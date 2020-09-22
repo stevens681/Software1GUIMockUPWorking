@@ -103,16 +103,16 @@ public class ModifyPartForm {
             //Depending what radio button is selected this will modify a part to in house or outsourced
             if(inHouRadio.isSelected()){
 
-                InHouse newPart = new InHouse(id, name, price, inv, min, max,macID);
-                Inventory.getAllParts().set(id-1, newPart);
+                InHouse upPart = new InHouse(id, name, price, inv, min, max,macID);
+                Inventory.updatePart(id, upPart);
 
 
             } else if(outRadio.isSelected()){
 
                 String copID = macCopText.getText();
 
-                Outsourced newPart = new Outsourced(id, name, price, inv, min, max,copID);
-                Inventory.getAllParts().set(id-1, newPart);
+                Outsourced upPart = new Outsourced(id, name, price, inv, min, max,copID);
+                Inventory.updatePart(id, upPart);
 
             }
 

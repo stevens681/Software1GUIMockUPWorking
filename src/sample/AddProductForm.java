@@ -19,10 +19,9 @@ public class AddProductForm {
     private TableView<Part> partTbl;        //Part's Table
     @FXML
     private TableView<Product> prodTbl;     //Product Table
-    private ObservableList<String> items = FXCollections.observableArrayList();
+    private ObservableList<Part> items = FXCollections.observableArrayList();
     @FXML
     private TextField searchPart;           //Searchbar for product
-
     @FXML
     private TextField nameText;
     @FXML
@@ -33,9 +32,11 @@ public class AddProductForm {
     private TextField maxText;
     @FXML
     private TextField minText;
+    int id = Inventory.getAllProducts().size() + 1;        //This generates the ID
 
-
-    //This will take you back to the main form
+    /**
+     * This will take you back to the main form
+     * */
     @FXML
     private void cancelBtn(ActionEvent a) throws IOException {
 
@@ -94,7 +95,7 @@ public class AddProductForm {
      * It will select the row if the search is done by ID
      * It will filter out the part that is looking for if is search by name
      * It will set the list to what it was after the search is done
-     * */
+     */
     @FXML
     public void searchPart(ActionEvent e) throws Exception{
 
@@ -170,12 +171,72 @@ public class AddProductForm {
         }
     }
 
+    /**
+     *This will make sure there is no empty fields
+     * Then will assign all the values
+     * Create and associate the new product
+     */
     @FXML
-    public void saveProduct(ActionEvent e) throws IOException{
+    public void saveProduct(ActionEvent a) throws IOException {
 
+        if(emptyField()){
+
+            //Variables declaration and assign
+            String name = nameText.getText();
+            double price = Double.parseDouble(priceText.getText());
+            int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
+                    max = Integer.parseInt(maxText.getText());
+
+            if(min >= max){
+
+                //Shows an error if min is higher than max and cleans the fields
+                showMessageDialog(null, "Minimal inventory cannot be grater than max");
+                minText.clear();
+                maxText.clear();
+
+            }
+            else {
+
+                //Associates all the parts to the product and the creates it
+                Product newProd = new Product(items, id, name, price, inv, min, max);
+                Inventory.addProduct(newProd);
+                Main.callForms(a, "MainForm.fxml"); //Calls the main form
+
+            }
+        }
     }
 
+    /**
+     * This delete a selected part
+     * Updates the table view
+     */
+    @FXML
+    public void deletePart(ActionEvent e){
 
+        Part part = partTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
+        Inventory.deletePart(part);     //Deletes the part
+        partTbl.setItems(Inventory.getAllParts());      //Updates the table
+    }
+
+    /**
+     * Checks for empty text fields
+     */
+    private boolean emptyField(){
+
+        if(nameText.getText().isEmpty() || invText.getText().isEmpty() ||
+                priceText.getText().isEmpty() || maxText.getText().isEmpty()
+                || minText.getText().isEmpty()) {
+
+            showMessageDialog(null, "Please fill all the fields");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    /**
+     * Initializes the form
+     */
     @FXML
     public void initialize() {
 
