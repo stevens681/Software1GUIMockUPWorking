@@ -13,8 +13,7 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class AddProductForm {
-
+public class ModifyProductForm {
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
@@ -32,7 +31,20 @@ public class AddProductForm {
     private TextField maxText;
     @FXML
     private TextField minText;
-    int id = Inventory.getAllProducts().size() + 1;        //This generates the ID
+    @FXML
+    private TextField idText;
+    public int id;        //This generates the ID
+
+    public void selectedProduct(Product product) {
+
+        id = product.getId();
+        idText.setText(Integer.toString(product.getId()));
+        nameText.setText(product.getName());
+        invText.setText(Integer.toString(product.getStock()));
+        priceText.setText(Double.toString(product.getPrice()));
+        maxText.setText(Integer.toString(product.getMax()));
+        minText.setText(Integer.toString(product.getMin()));
+    }
 
     /**
      * This will take you back to the main form
@@ -172,7 +184,7 @@ public class AddProductForm {
     /**
      * This will make sure there is no empty fields
      * Then will assign all the values
-     * Create and associate the new product
+     * Updates the product
      */
     @FXML
     public void saveProduct(ActionEvent a) throws IOException {
@@ -194,9 +206,9 @@ public class AddProductForm {
 
             } else {
 
-                //Associates all the parts to the product and the creates it
-                Product newProd = new Product(items, id, name, price, inv, min, max);
-                Inventory.addProduct(newProd);
+
+                Product upProd = new Product(items, id, name, price, inv, min, max);
+                Inventory.updateProduct(id, upProd);
                 Main.callForms(a, "MainForm.fxml"); //Calls the main form
 
             }

@@ -39,16 +39,14 @@ public class ModifyPartForm {
     /**
      * Selects the radios button
      * Fills the field text areas with the passed part
-     *
-     * */
-    public void selectedPart(Part part){
+     */
+    public void selectedPart(Part part) {
 
-        if(part instanceof InHouse){
-           inHouRadio.setSelected(true);
-           macCopText.setText(Integer.toString(((InHouse) part).getMachineId()));
+        if (part instanceof InHouse) {
+            inHouRadio.setSelected(true);
+            macCopText.setText(Integer.toString(((InHouse) part).getMachineId()));
 
-        }
-        else {
+        } else {
             outRadio.setSelected(true);
             macCopText.setText(((Outsourced) part).getCompanyName());
 
@@ -66,9 +64,11 @@ public class ModifyPartForm {
 
     }
 
-    //When the In-House radio button is selected
+    /**
+     * When the In-House radio button is selected
+     */
     @FXML
-    private void inRadioBtn(ActionEvent e){
+    private void inRadioBtn(ActionEvent e) {
 
         inOutLabel.setText("Machine ID");       //Changes the label name
         outRadio.setSelected(false);            //Deselect Outsourced radio
@@ -76,9 +76,11 @@ public class ModifyPartForm {
 
     }
 
-    //When the outsourced radio is selected
+    /**
+     * When the outsourced radio is selected
+     */
     @FXML
-    private void outRadioBtn(ActionEvent e){
+    private void outRadioBtn(ActionEvent e) {
 
         inOutLabel.setText("Company Name");     //Changes the label name
         inHouRadio.setSelected(false);          //Deselect In-House radio
@@ -86,13 +88,15 @@ public class ModifyPartForm {
 
     }
 
-    //Save button, this will check all the fields and modify them to the part list
+    /**
+     *Save button, this will check all the fields and modify them to the part list
+     */
     @FXML
     private void saveBtn(ActionEvent e) throws IOException {
 
 
         //This check for any empty fields
-        if(emptyField()){
+        if (emptyField()) {
 
             //Variables declaration
             String name = nameText.getText();
@@ -101,17 +105,17 @@ public class ModifyPartForm {
                     max = Integer.parseInt(maxText.getText()), macID = Integer.parseInt(macCopText.getText());
 
             //Depending what radio button is selected this will modify a part to in house or outsourced
-            if(inHouRadio.isSelected()){
+            if (inHouRadio.isSelected()) {
 
-                InHouse upPart = new InHouse(id, name, price, inv, min, max,macID);
+                InHouse upPart = new InHouse(id, name, price, inv, min, max, macID);
                 Inventory.updatePart(id, upPart);
 
 
-            } else if(outRadio.isSelected()){
+            } else if (outRadio.isSelected()) {
 
                 String copID = macCopText.getText();
 
-                Outsourced upPart = new Outsourced(id, name, price, inv, min, max,copID);
+                Outsourced upPart = new Outsourced(id, name, price, inv, min, max, copID);
                 Inventory.updatePart(id, upPart);
 
             }
@@ -122,7 +126,9 @@ public class ModifyPartForm {
 
     }
 
-    //This will take you back to the main form
+    /**
+     * This will take you back to the main form
+     */
     @FXML
     private void cancelBtn(ActionEvent a) throws IOException {
 
@@ -130,22 +136,18 @@ public class ModifyPartForm {
 
     }
 
-    //Checks for empty text fields
-    private boolean emptyField(){
+    /**
+     * Checks for empty text fields
+     */
+    private boolean emptyField() {
 
-        if(nameText.getText().isEmpty() || invText.getText().isEmpty() ||
-                priceText.getText().isEmpty() || maxText.getText().isEmpty() ||minText.getText().isEmpty()
+        if (nameText.getText().isEmpty() || invText.getText().isEmpty() ||
+                priceText.getText().isEmpty() || maxText.getText().isEmpty() || minText.getText().isEmpty()
                 || macCopText.getText().isEmpty()) {
 
             showMessageDialog(null, "Please fill all the fields");
             return false;
-        }
-        else
+        } else
             return true;
-    }
-
-    @FXML
-    public void initialize(){
-
     }
 }

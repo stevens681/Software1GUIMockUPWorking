@@ -2,6 +2,7 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,11 +12,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -30,15 +29,19 @@ public class MainForm {
     private TextField searchPart;           //Searchbar for part
     @FXML
     private TextField searchProd;           //Searchbar for product
-    Parent parent;
-    Stage stage;
-    //Exit button
+
+
+    /**
+     * Exit button
+     */
     @FXML
-    private void exit(ActionEvent actionEvent){
+    private void exit(ActionEvent actionEvent) {
         System.exit(0);
     }
 
-    //Opens the add part form
+    /**
+     * Opens the add part form
+     */
     @FXML
     public void addPartBtn(ActionEvent a) throws IOException {
 
@@ -46,7 +49,9 @@ public class MainForm {
 
     }
 
-    //Opens the add product form
+    /**
+     * Opens the add product form
+     */
     @FXML
     public void addProdBtn(ActionEvent a) throws IOException {
 
@@ -57,8 +62,10 @@ public class MainForm {
     @FXML
     public void modPartBtn(ActionEvent a) throws IOException {
         Part part = partTbl.getSelectionModel().getSelectedItem();
+        Parent parent;
+        Stage stage;
 
-        if(part == null)
+        if (part == null)
             showMessageDialog(null, "Please select a part");
         else {
 
@@ -67,13 +74,33 @@ public class MainForm {
             ModifyPartForm selected = loader.getController();
             selected.selectedPart(partTbl.getSelectionModel().getSelectedItem());
             parent = loader.getRoot();
-            stage = (Stage) ((Node)a.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) a.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
             stage.show();
 
         }
+    }
 
+    @FXML
+    public void modProdBtn(ActionEvent a) throws IOException {
+        Product product = prodTbl.getSelectionModel().getSelectedItem();
+        Parent parent;
+        Stage stage;
 
+        if (product == null)
+            showMessageDialog(null, "Please select a product");
+        else {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyProductForm.fxml"));
+            loader.load();
+            ModifyProductForm selected = loader.getController();
+            selected.selectedProduct(prodTbl.getSelectionModel().getSelectedItem());
+            parent = loader.getRoot();
+            stage = (Stage) ((Node) a.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+        }
     }
 
     /**
@@ -81,24 +108,24 @@ public class MainForm {
      * It will select the row if the search is done by ID
      * It will filter out the part that is looking for if is search by name
      * It will set the list to what it was after the search is done
-     * */
+     */
     @FXML
-    public void searchPart(ActionEvent e) throws Exception{
+    public void searchPart(ActionEvent e) throws Exception {
 
         String search = searchPart.getText().toLowerCase();     //Gets the text from the text field
         ObservableList<Part> items = FXCollections.observableArrayList();   //Creates a new observable list
         boolean searchById = false, notFound = false;
 
         //Checks if not empty
-        if(!searchPart.getText().isEmpty()) {
+        if (!searchPart.getText().isEmpty()) {
 
             //Goes through the list
-            for(Part part : Inventory.getAllParts()){
+            for (Part part : Inventory.getAllParts()) {
                 try {   //Tries to check if the value from the text field is an integer or String
 
                     int id = Integer.parseInt(search);  //Assigns the integer
 
-                    if(id == part.getId()){     //Checks for the ID number
+                    if (id == part.getId()) {     //Checks for the ID number
 
                         partTbl.setItems(Inventory.getAllParts());      //In case the table was filtered
                         partTbl.getSelectionModel().select(Inventory.lookupPart(part.getId()));     //Selects the table row
@@ -106,7 +133,7 @@ public class MainForm {
                         notFound = false;
 
                         break;
-                    }else {
+                    } else {
                         searchById = true;
                         notFound = true;
                     }
@@ -114,10 +141,10 @@ public class MainForm {
                 }
 
                 //If the text field is a string then do this
-                catch (NumberFormatException exception ){
+                catch (NumberFormatException exception) {
 
                     //Compare the part name to the initial string from the search bar
-                    if(part.getName().toLowerCase().startsWith(search)){
+                    if (part.getName().toLowerCase().startsWith(search)) {
 
                         items.add(Inventory.lookupPart(part.getId()));  //Add to my empty list
 
@@ -125,14 +152,13 @@ public class MainForm {
                 }
             }
 
-            if(!searchById){
+            if (!searchById) {
                 //If the new list is not empty
-                if(!items.isEmpty()) {
+                if (!items.isEmpty()) {
 
                     partTbl.setItems(items);    //Add all the parts to the table from the new list
                     partTbl.getSelectionModel().clearSelection();   //Clear if it something was selected
-                }
-                else {
+                } else {
 
                     partTbl.setItems(Inventory.getAllParts());
                     showMessageDialog(null, "Part Name not found, Try another Part Name");
@@ -140,14 +166,13 @@ public class MainForm {
                     searchPart.clear();
                 }
             }
-            if(notFound){
+            if (notFound) {
 
                 showMessageDialog(null, "Part ID not found, Try another ID number");    //Displays an error
                 partTbl.getSelectionModel().clearSelection();
             }
 
-        }
-        else {
+        } else {
 
             //Shows and error and clean previous searches
             showMessageDialog(null, "To search you must type a \"Part ID\" or \"Part Name\"");
@@ -160,9 +185,9 @@ public class MainForm {
     /**
      * This delete a selected part
      * Updates the table view
-     * */
+     */
     @FXML
-    public void deletePart(ActionEvent e){
+    public void deletePart(ActionEvent e) {
 
         Part part = partTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
         Inventory.deletePart(part);     //Deletes the part
@@ -172,9 +197,9 @@ public class MainForm {
     /**
      * This delete a selected product
      * Updates the table view
-     * */
+     */
     @FXML
-    public void deleteProduct(ActionEvent e){
+    public void deleteProduct(ActionEvent e) {
 
         Product product = prodTbl.getSelectionModel().getSelectedItem();        //Gets the selected product
         Inventory.deleteProduct(product);       //Deletes the product
@@ -186,24 +211,24 @@ public class MainForm {
      * It will select the row if the search is done by ID
      * It will filter out the product that is looking for if is search by name
      * It will set the list to what it was after the search is done
-     * */
+     */
     @FXML
-    public void searchProd(ActionEvent e) throws Exception{
+    public void searchProd(ActionEvent e) throws Exception {
 
         String search = searchProd.getText().toLowerCase();     //Gets the text from the text field
         ObservableList<Product> items = FXCollections.observableArrayList();   //Creates a new observable list
         boolean searchById = false, notFound = false;
 
         //Checks if not empty
-        if(!searchProd.getText().isEmpty()) {
+        if (!searchProd.getText().isEmpty()) {
 
             //Goes through the list
-            for(Product product : Inventory.getAllProducts()){
+            for (Product product : Inventory.getAllProducts()) {
                 try {   //Tries to check if the value from the text field is an integer or String
 
                     int id = Integer.parseInt(search);  //Assigns the integer
 
-                    if(id == product.getId()){     //Checks for the ID number
+                    if (id == product.getId()) {     //Checks for the ID number
 
                         prodTbl.setItems(Inventory.getAllProducts());      //In case the table was filtered
                         prodTbl.getSelectionModel().select(Inventory.lookupProduct(product.getId()));     //Selects the table row
@@ -212,8 +237,7 @@ public class MainForm {
 
 
                         break;
-                    }
-                    else{
+                    } else {
                         searchById = true;
                         notFound = true;
 
@@ -221,10 +245,10 @@ public class MainForm {
                 }
 
                 //If the text field is a string then do this
-                catch (NumberFormatException exception ){
+                catch (NumberFormatException exception) {
 
                     //Compare the product name to the initial string from the search bar
-                    if(product.getName().toLowerCase().startsWith(search)){
+                    if (product.getName().toLowerCase().startsWith(search)) {
 
                         items.add(Inventory.lookupProduct(product.getId()));  //Add to my empty list
 
@@ -233,14 +257,13 @@ public class MainForm {
             }
 
 
-            if(!searchById){
+            if (!searchById) {
                 //If the new list is not empty
-                if(!items.isEmpty()) {
+                if (!items.isEmpty()) {
 
                     prodTbl.setItems(items);    //Add all the product to the table from the new list
                     prodTbl.getSelectionModel().clearSelection();   //Clear if it something was selected
-                }
-                else {
+                } else {
 
                     prodTbl.setItems(Inventory.getAllProducts());
                     showMessageDialog(null, "Part Name not found, Try another Product Name");
@@ -249,14 +272,13 @@ public class MainForm {
                 }
             }
 
-            if(notFound){
+            if (notFound) {
 
                 showMessageDialog(null, "Product ID not found, Try another ID number");    //Displays an error
                 prodTbl.getSelectionModel().clearSelection();
             }
 
-        }
-        else {
+        } else {
 
             //Shows and error and clean previous searches
             showMessageDialog(null, "To search you must type a \"Product ID\" or \"Product Name\"");
@@ -271,8 +293,8 @@ public class MainForm {
      * This will create columns for each tableView
      * also set the with for each one of it
      * and has the label and what part or product goes into the fields
-     * */
-    public void colCreator(String tbls){
+     */
+    public void colCreator(String tbls) {
 
         String[] lblPart = {"Part Id", "Part Name", "Inventory Level", "Price// Cost per Unit"};            //Labels for the part table columns
         String[] lblProduct = {"Product Id", "Product Name", "Inventory Level", "Price// Cost per Unit"};   //Labels for the product table columns
@@ -280,11 +302,11 @@ public class MainForm {
         int colWidth = 125;     //Holds the first 3 width
 
         //This creates and fills the part tableView
-        if(tbls.toLowerCase().equals("part")){
+        if (tbls.toLowerCase().equals("part")) {
             partTbl.setItems(Inventory.getAllParts());      //Gets all the parts
 
-            for(int i =0; i<4; i++){
-                if(areas[i].equals("price"))
+            for (int i = 0; i < 4; i++) {
+                if (areas[i].equals("price"))
                     colWidth = 175;
 
                 TableColumn column = new TableColumn(lblPart[i]);
@@ -292,15 +314,14 @@ public class MainForm {
                 column.setMinWidth(colWidth);
                 partTbl.getColumns().addAll(column);        //Adds all the columns for the part's table
             }
-
         }
 
         //This creates and fills the product tableView
-         if(tbls.toLowerCase().equals("product")){
+        if (tbls.toLowerCase().equals("product")) {
             prodTbl.setItems(Inventory.getAllProducts());       //Gets all the products
 
-            for(int i =0; i<4; i++){
-                if(areas[i].equals("price"))
+            for (int i = 0; i < 4; i++) {
+                if (areas[i].equals("price"))
                     colWidth = 175;
 
                 TableColumn column = new TableColumn(lblProduct[i]);
@@ -308,11 +329,12 @@ public class MainForm {
                 column.setMinWidth(colWidth);
                 prodTbl.getColumns().addAll(column);        //Adds all the columns for the product table
             }
-
         }
-
     }
 
+    /**
+     * Initializes the form
+     */
     @FXML
     public void initialize() {
 

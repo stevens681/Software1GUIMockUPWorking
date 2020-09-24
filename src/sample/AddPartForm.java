@@ -35,32 +35,38 @@ public class AddPartForm {
     private TextField macCopText;
 
     int id = Inventory.getAllParts().size() + 1;        //This generates the ID
-    //When the In-House radio button is selected
+
+    /**
+     * When the In-House radio button is selected
+     */
     @FXML
-    private void inRadioBtn(ActionEvent e){
+    private void inRadioBtn(ActionEvent e) {
 
         inOutLabel.setText("Machine ID");       //Changes the label name
         outRadio.setSelected(false);            //Deselect Outsourced radio
 
     }
 
-    //When the outsourced radio is selected
+    /**
+     * When the outsourced radio is selected
+     */
     @FXML
-    private void outRadioBtn(ActionEvent e){
+    private void outRadioBtn(ActionEvent e) {
 
         inOutLabel.setText("Company Name");     //Changes the label name
         inHouRadio.setSelected(false);          //Deselect In-House radio
 
     }
 
-    //Save button, this will check all the fields and add them to the part list
+    /**
+     * Save button, this will check all the fields and add them to the part list
+     */
     @FXML
-    private void saveBtn(ActionEvent e) throws IOException{
-
+    private void saveBtn(ActionEvent e) throws IOException {
 
 
         //This check for any empty fields
-        if(emptyField()){
+        if (emptyField()) {
 
             //Variables declaration
             String name = nameText.getText();
@@ -69,18 +75,17 @@ public class AddPartForm {
                     max = Integer.parseInt(maxText.getText());
 
             //Depending what radio button is selected this will add a part to in house or outsourced
-            if(inHouRadio.isSelected()){
-                int macID = Integer.parseInt(macCopText.getText());
-                InHouse newPart = new InHouse(id, name, price, inv, min, max,macID);
-                Inventory.addPart(newPart);
+            if (inHouRadio.isSelected()) {
 
-            } else if(outRadio.isSelected()){
+                int macID = Integer.parseInt(macCopText.getText());
+                InHouse newPart = new InHouse(id, name, price, inv, min, max, macID);
+                Inventory.addPart(newPart);
+            } else if (outRadio.isSelected()) {
 
                 String copID = macCopText.getText();
 
-                Outsourced newPart = new Outsourced(id, name, price, inv, min, max,copID);
+                Outsourced newPart = new Outsourced(id, name, price, inv, min, max, copID);
                 Inventory.addPart(newPart);
-
             }
 
             Main.callForms(e, "MainForm.fxml"); //Calls the main form back
@@ -89,7 +94,9 @@ public class AddPartForm {
 
     }
 
-    //This will take you back to the main form
+    /**
+     * This will take you back to the main form
+     */
     @FXML
     private void cancelBtn(ActionEvent a) throws IOException {
 
@@ -97,22 +104,26 @@ public class AddPartForm {
 
     }
 
-    //Checks for empty text fields
-    private boolean emptyField(){
+    /**
+     * Checks for empty text fields
+     */
+    private boolean emptyField() {
 
-        if(nameText.getText().isEmpty() || invText.getText().isEmpty() ||
-        priceText.getText().isEmpty() || maxText.getText().isEmpty() ||minText.getText().isEmpty()
-        || macCopText.getText().isEmpty()) {
+        if (nameText.getText().isEmpty() || invText.getText().isEmpty() ||
+                priceText.getText().isEmpty() || maxText.getText().isEmpty() || minText.getText().isEmpty()
+                || macCopText.getText().isEmpty()) {
 
             showMessageDialog(null, "Please fill all the fields");
             return false;
-        }
-        else
+        } else
             return true;
     }
 
+    /**
+     * Initializes the form
+     */
     @FXML
-    public void initialize(){
+    public void initialize() {
 
         inHouRadio.setSelected(true);
 
