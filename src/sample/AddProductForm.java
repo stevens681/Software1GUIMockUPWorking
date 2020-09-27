@@ -13,6 +13,10 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+/**
+ * This will add a product
+ * @author Fernando Rosa
+ */
 public class AddProductForm {
 
     @FXML
@@ -36,11 +40,13 @@ public class AddProductForm {
 
     /**
      * This will take you back to the main form
+     * @param e ActionEvent
+     * @throws IOException Failed to go back to the main form
      */
     @FXML
-    private void cancelBtn(ActionEvent a) throws IOException {
+    private void cancelBtn(ActionEvent e) throws IOException {
 
-        Main.callForms(a, "MainForm.fxml"); //Calls the main form
+        Main.callForms(e, "MainForm.fxml"); //Calls the main form
 
     }
 
@@ -48,6 +54,7 @@ public class AddProductForm {
      * This will create columns for each tableView
      * also set the with for each one of it
      * and has the label and what part or product goes into the fields
+     * @param tbls The name of the table
      */
     public void colCreator(String tbls) {
 
@@ -95,6 +102,8 @@ public class AddProductForm {
      * It will select the row if the search is done by ID
      * It will filter out the part that is looking for if is search by name
      * It will set the list to what it was after the search is done
+     * @param e ActionEvent
+     * @throws Exception Checks if the input is letters or numbers
      */
     @FXML
     public void searchPart(ActionEvent e) throws Exception {
@@ -173,9 +182,11 @@ public class AddProductForm {
      * This will make sure there is no empty fields
      * Then will assign all the values
      * Create and associate the new product
+     * @param e ActionEvent
+     * @throws IOException Failed to go back to the main form or save the product
      */
     @FXML
-    public void saveProduct(ActionEvent a) throws IOException {
+    public void saveProduct(ActionEvent e) throws IOException {
 
         if (emptyField()) {
 
@@ -197,7 +208,7 @@ public class AddProductForm {
                 //Associates all the parts to the product and the creates it
                 Product newProd = new Product(items, id, name, price, inv, min, max);
                 Inventory.addProduct(newProd);
-                Main.callForms(a, "MainForm.fxml"); //Calls the main form
+                Main.callForms(e, "MainForm.fxml"); //Calls the main form
 
             }
         }
@@ -206,6 +217,7 @@ public class AddProductForm {
     /**
      * This delete a selected part
      * Updates the table view
+     * @param e ActionEvent
      */
     @FXML
     public void deletePart(ActionEvent e) {
@@ -217,6 +229,7 @@ public class AddProductForm {
 
     /**
      * Checks for empty text fields
+     * @return If any field is empty
      */
     private boolean emptyField() {
 

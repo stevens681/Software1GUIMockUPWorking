@@ -35,7 +35,7 @@ public class MainForm {
      * Exit button
      */
     @FXML
-    private void exit(ActionEvent actionEvent) {
+    private void exit(ActionEvent e) {
         System.exit(0);
     }
 
@@ -43,9 +43,9 @@ public class MainForm {
      * Opens the add part form
      */
     @FXML
-    public void addPartBtn(ActionEvent a) throws IOException {
+    public void addPartBtn(ActionEvent e) throws IOException {
 
-        Main.callForms(a, "AddPartForm.fxml");
+        Main.callForms(e, "AddPartForm.fxml");
 
     }
 
@@ -53,14 +53,14 @@ public class MainForm {
      * Opens the add product form
      */
     @FXML
-    public void addProdBtn(ActionEvent a) throws IOException {
+    public void addProdBtn(ActionEvent e) throws IOException {
 
-        Main.callForms(a, "AddProductForm.fxml");
+        Main.callForms(e, "AddProductForm.fxml");
 
     }
 
     @FXML
-    public void modPartBtn(ActionEvent a) throws IOException {
+    public void modPartBtn(ActionEvent e) throws IOException {
         Part part = partTbl.getSelectionModel().getSelectedItem();
         Parent parent;
         Stage stage;
@@ -74,7 +74,7 @@ public class MainForm {
             ModifyPartForm selected = loader.getController();
             selected.selectedPart(partTbl.getSelectionModel().getSelectedItem());
             parent = loader.getRoot();
-            stage = (Stage) ((Node) a.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
             stage.show();
 
@@ -82,7 +82,7 @@ public class MainForm {
     }
 
     @FXML
-    public void modProdBtn(ActionEvent a) throws IOException {
+    public void modProdBtn(ActionEvent e) throws IOException {
         Product product = prodTbl.getSelectionModel().getSelectedItem();
         Parent parent;
         Stage stage;
@@ -96,7 +96,7 @@ public class MainForm {
             ModifyProductForm selected = loader.getController();
             selected.selectedProduct(prodTbl.getSelectionModel().getSelectedItem());
             parent = loader.getRoot();
-            stage = (Stage) ((Node) a.getSource()).getScene().getWindow();
+            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
             stage.show();
 
@@ -234,10 +234,10 @@ public class MainForm {
                         prodTbl.getSelectionModel().select(Inventory.lookupProduct(product.getId()));     //Selects the table row
                         searchById = true;
                         notFound = false;
-
-
                         break;
+
                     } else {
+
                         searchById = true;
                         notFound = true;
 
@@ -256,13 +256,14 @@ public class MainForm {
                 }
             }
 
-
             if (!searchById) {
+
                 //If the new list is not empty
                 if (!items.isEmpty()) {
 
                     prodTbl.setItems(items);    //Add all the product to the table from the new list
                     prodTbl.getSelectionModel().clearSelection();   //Clear if it something was selected
+
                 } else {
 
                     prodTbl.setItems(Inventory.getAllProducts());
@@ -287,7 +288,6 @@ public class MainForm {
             searchProd.clear();
         }
     }
-
 
     /**
      * This will create columns for each tableView
@@ -318,9 +318,11 @@ public class MainForm {
 
         //This creates and fills the product tableView
         if (tbls.toLowerCase().equals("product")) {
+
             prodTbl.setItems(Inventory.getAllProducts());       //Gets all the products
 
             for (int i = 0; i < 4; i++) {
+
                 if (areas[i].equals("price"))
                     colWidth = 175;
 
@@ -342,5 +344,4 @@ public class MainForm {
         colCreator("product");
 
     }
-
 }

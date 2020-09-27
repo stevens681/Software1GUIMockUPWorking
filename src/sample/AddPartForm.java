@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+/**
+ * This is the controller for Add Part Form
+ * @author Fernando Rosa
+ */
 public class AddPartForm {
 
     //Elements from the form
@@ -38,6 +42,7 @@ public class AddPartForm {
 
     /**
      * When the In-House radio button is selected
+     * @param e ActionEvent
      */
     @FXML
     private void inRadioBtn(ActionEvent e) {
@@ -49,6 +54,7 @@ public class AddPartForm {
 
     /**
      * When the outsourced radio is selected
+     * @param e ActionEvent
      */
     @FXML
     private void outRadioBtn(ActionEvent e) {
@@ -60,6 +66,8 @@ public class AddPartForm {
 
     /**
      * Save button, this will check all the fields and add them to the part list
+     * @param e ActionEvent
+     * @throws IOException Failed to save the part
      */
     @FXML
     private void saveBtn(ActionEvent e) throws IOException {
@@ -96,16 +104,19 @@ public class AddPartForm {
 
     /**
      * This will take you back to the main form
+     * @param e ActionEvent
+     * @throws IOException Failed to go back to the main form
      */
     @FXML
-    private void cancelBtn(ActionEvent a) throws IOException {
+    private void cancelBtn(ActionEvent e) throws IOException {
 
-        Main.callForms(a, "MainForm.fxml"); //Calls the main form
+        Main.callForms(e, "MainForm.fxml"); //Calls the main form
 
     }
 
     /**
      * Checks for empty text fields
+     * @return If any field is empty
      */
     private boolean emptyField() {
 

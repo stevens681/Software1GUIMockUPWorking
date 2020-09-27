@@ -152,6 +152,7 @@ public class ModifyProductForm {
             }
 
             if (!searchById) {
+
                 //If the new list is not empty
                 if (!items.isEmpty()) {
 
