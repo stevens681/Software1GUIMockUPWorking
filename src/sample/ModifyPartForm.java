@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+/**
+ * This is the controller for Modify Part Form
+ * @author Fernando Rosa
+ */
 public class ModifyPartForm {
 
     //Elements from the form
@@ -39,17 +43,16 @@ public class ModifyPartForm {
     /**
      * Selects the radios button
      * Fills the field text areas with the passed part
+     * @param part The part and it's fields
      */
     public void selectedPart(Part part) {
 
         if (part instanceof InHouse) {
             inHouRadio.setSelected(true);
             macCopText.setText(Integer.toString(((InHouse) part).getMachineId()));
-
         } else {
             outRadio.setSelected(true);
             macCopText.setText(((Outsourced) part).getCompanyName());
-
         }
 
         //Fills the areas
@@ -60,12 +63,11 @@ public class ModifyPartForm {
         priceText.setText(Double.toString(part.getPrice()));
         maxText.setText(Integer.toString(part.getMax()));
         minText.setText(Integer.toString(part.getMin()));
-
-
     }
 
     /**
      * When the In-House radio button is selected
+     * @param e ActionEvent
      */
     @FXML
     private void inRadioBtn(ActionEvent e) {
@@ -73,11 +75,11 @@ public class ModifyPartForm {
         inOutLabel.setText("Machine ID");       //Changes the label name
         outRadio.setSelected(false);            //Deselect Outsourced radio
         macCopText.clear();
-
     }
 
     /**
      * When the outsourced radio is selected
+     * @param e ActionEvent
      */
     @FXML
     private void outRadioBtn(ActionEvent e) {
@@ -85,11 +87,12 @@ public class ModifyPartForm {
         inOutLabel.setText("Company Name");     //Changes the label name
         inHouRadio.setSelected(false);          //Deselect In-House radio
         macCopText.clear();
-
     }
 
     /**
      *Save button, this will check all the fields and modify them to the part list
+     * @param e ActionEvent
+     * @throws IOException Failed to save the part
      */
     @FXML
     private void saveBtn(ActionEvent e) throws IOException {
@@ -109,35 +112,32 @@ public class ModifyPartForm {
 
                 InHouse upPart = new InHouse(id, name, price, inv, min, max, macID);
                 Inventory.updatePart(id, upPart);
-
-
             } else if (outRadio.isSelected()) {
 
                 String copID = macCopText.getText();
-
                 Outsourced upPart = new Outsourced(id, name, price, inv, min, max, copID);
                 Inventory.updatePart(id, upPart);
-
             }
 
             Main.callForms(e, "MainForm.fxml"); //Calls the main form back
-
         }
 
     }
 
     /**
      * This will take you back to the main form
+     * @param e ActionEvent
+     * @throws IOException Failed to go back to the main form
      */
     @FXML
-    private void cancelBtn(ActionEvent a) throws IOException {
+    private void cancelBtn(ActionEvent e) throws IOException {
 
-        Main.callForms(a, "MainForm.fxml"); //Calls the main form
-
+        Main.callForms(e, "MainForm.fxml"); //Calls the main form
     }
 
     /**
      * Checks for empty text fields
+     * @return If any field is empty
      */
     private boolean emptyField() {
 

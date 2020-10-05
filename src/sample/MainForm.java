@@ -18,7 +18,10 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-
+/**
+ * This is the controller for the main form
+ * @author Fernando Rosa
+ */
 public class MainForm {
 
     @FXML
@@ -33,6 +36,7 @@ public class MainForm {
 
     /**
      * Exit button
+     * @param e ActionEvent
      */
     @FXML
     private void exit(ActionEvent e) {
@@ -41,24 +45,31 @@ public class MainForm {
 
     /**
      * Opens the add part form
+     * @param e ActionEvent
+     * @throws IOException If fails to load the add part form
      */
     @FXML
     public void addPartBtn(ActionEvent e) throws IOException {
 
         Main.callForms(e, "AddPartForm.fxml");
-
     }
 
     /**
      * Opens the add product form
+     * @param e ActionEvent
+     * @throws IOException If fails to load the add product form
      */
     @FXML
     public void addProdBtn(ActionEvent e) throws IOException {
 
         Main.callForms(e, "AddProductForm.fxml");
-
     }
 
+    /**
+     * Opens the modification part form
+     * @param e ActionEvent
+     * @throws IOException If fails to load the modification part form
+     */
     @FXML
     public void modPartBtn(ActionEvent e) throws IOException {
         Part part = partTbl.getSelectionModel().getSelectedItem();
@@ -77,10 +88,14 @@ public class MainForm {
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
             stage.show();
-
         }
     }
 
+    /**
+     * Opens the modification product form
+     * @param e ActionEvent
+     * @throws IOException If fails to load the modification product form
+     */
     @FXML
     public void modProdBtn(ActionEvent e) throws IOException {
         Product product = prodTbl.getSelectionModel().getSelectedItem();
@@ -99,7 +114,6 @@ public class MainForm {
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
             stage.show();
-
         }
     }
 
@@ -108,6 +122,8 @@ public class MainForm {
      * It will select the row if the search is done by ID
      * It will filter out the part that is looking for if is search by name
      * It will set the list to what it was after the search is done
+     * @param e ActionEvent
+     * @throws Exception Check for exception
      */
     @FXML
     public void searchPart(ActionEvent e) throws Exception {
@@ -131,13 +147,11 @@ public class MainForm {
                         partTbl.getSelectionModel().select(Inventory.lookupPart(part.getId()));     //Selects the table row
                         searchById = true;
                         notFound = false;
-
                         break;
                     } else {
                         searchById = true;
                         notFound = true;
                     }
-
                 }
 
                 //If the text field is a string then do this
@@ -147,7 +161,6 @@ public class MainForm {
                     if (part.getName().toLowerCase().startsWith(search)) {
 
                         items.add(Inventory.lookupPart(part.getId()));  //Add to my empty list
-
                     }
                 }
             }
@@ -185,6 +198,7 @@ public class MainForm {
     /**
      * This delete a selected part
      * Updates the table view
+     * @param e ActionEvent
      */
     @FXML
     public void deletePart(ActionEvent e) {
@@ -197,6 +211,7 @@ public class MainForm {
     /**
      * This delete a selected product
      * Updates the table view
+     * @param e ActionEvent
      */
     @FXML
     public void deleteProduct(ActionEvent e) {
@@ -211,6 +226,8 @@ public class MainForm {
      * It will select the row if the search is done by ID
      * It will filter out the product that is looking for if is search by name
      * It will set the list to what it was after the search is done
+     * @param e ActionEvent
+     * @throws Exception Check for exception
      */
     @FXML
     public void searchProd(ActionEvent e) throws Exception {
@@ -235,12 +252,10 @@ public class MainForm {
                         searchById = true;
                         notFound = false;
                         break;
-
                     } else {
 
                         searchById = true;
                         notFound = true;
-
                     }
                 }
 
@@ -251,7 +266,6 @@ public class MainForm {
                     if (product.getName().toLowerCase().startsWith(search)) {
 
                         items.add(Inventory.lookupProduct(product.getId()));  //Add to my empty list
-
                     }
                 }
             }
@@ -263,7 +277,6 @@ public class MainForm {
 
                     prodTbl.setItems(items);    //Add all the product to the table from the new list
                     prodTbl.getSelectionModel().clearSelection();   //Clear if it something was selected
-
                 } else {
 
                     prodTbl.setItems(Inventory.getAllProducts());
@@ -278,7 +291,6 @@ public class MainForm {
                 showMessageDialog(null, "Product ID not found, Try another ID number");    //Displays an error
                 prodTbl.getSelectionModel().clearSelection();
             }
-
         } else {
 
             //Shows and error and clean previous searches
@@ -293,6 +305,7 @@ public class MainForm {
      * This will create columns for each tableView
      * also set the with for each one of it
      * and has the label and what part or product goes into the fields
+     * @param tbls The name of table view
      */
     public void colCreator(String tbls) {
 
@@ -342,6 +355,5 @@ public class MainForm {
 
         colCreator("part");
         colCreator("product");
-
     }
 }

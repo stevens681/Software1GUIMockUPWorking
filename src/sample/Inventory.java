@@ -5,6 +5,10 @@ import javafx.collections.ObservableList;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+/**
+ * This the inventory
+ * @author Fernando Rosa
+ */
 public class Inventory {
 
     private static final ObservableList<Part> allParts = FXCollections.observableArrayList();       //Part list
@@ -12,6 +16,7 @@ public class Inventory {
 
     /**
      * Adds a part
+     * @param newPart The new part to be add
      */
     public static void addPart(Part newPart) {
         boolean flag = true;
@@ -35,16 +40,17 @@ public class Inventory {
 
     /**
      * Adds a product
+     * @param newProduct Product to be set
      */
     public static void addProduct(Product newProduct) {
 
         allProducts.add(newProduct);
-
-
     }
 
     /**
      * Return the fields for a part
+     * @param partId Part id to be set
+     * @return The part id
      */
     public static Part lookupPart(int partId) {
         for (Part part : Inventory.getAllParts()) {
@@ -57,6 +63,8 @@ public class Inventory {
 
     /**
      * Return the fields for a product
+     * @param productId Product it to be set
+     * @return The product id
      */
     public static Product lookupProduct(int productId) {
         for (Product product : Inventory.getAllProducts()) {
@@ -69,17 +77,25 @@ public class Inventory {
 
     /**
      * The part select will update with the new info
+     * @param index What number is the part
+     * @param selectedPart What part is selected
      */
     public static void updatePart(int index, Part selectedPart) {
         getAllParts().set(index - 1, selectedPart);
     }
 
+    /**
+     * The product select will update with the new info
+     * @param index What number is the product
+     * @param selectedProduct What product is selected
+     */
     public static void updateProduct(int index, Product selectedProduct) {
         getAllProducts().set(index - 1, selectedProduct);
     }
 
     /**
      * Remove a part
+     * @param selectedPart The selected part
      */
     public static void deletePart(Part selectedPart) {
         allParts.remove(selectedPart);
@@ -87,6 +103,7 @@ public class Inventory {
 
     /**
      * Remove a product
+     * @param selectedProduct The selected product
      */
     public static void deleteProduct(Product selectedProduct) {
         allProducts.remove(selectedProduct);
@@ -94,6 +111,7 @@ public class Inventory {
 
     /**
      * Returns all the parts
+     * @return All the parts
      */
     public static ObservableList<Part> getAllParts() {
         return allParts;
@@ -101,6 +119,7 @@ public class Inventory {
 
     /**
      * Returns all the product
+     * @return All the product
      */
     public static ObservableList<Product> getAllProducts() {
         return allProducts;

@@ -10,6 +10,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This is the main class
+ * @author Fernando Rosa
+ */
 public class Main extends Application {
 
     @Override
@@ -26,6 +30,8 @@ public class Main extends Application {
      * This will open the requested form
      * It will set the scene
      * It will set the size of the form
+     * @param actionEvent ActionEvent
+     * @param loadForm Form to be load
      */
     public static void callForms(ActionEvent actionEvent, String loadForm) throws IOException {
 
