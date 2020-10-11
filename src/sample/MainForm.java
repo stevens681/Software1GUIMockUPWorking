@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -203,9 +204,14 @@ public class MainForm {
     @FXML
     public void deletePart(ActionEvent e) {
 
-        Part part = partTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
-        Inventory.deletePart(part);     //Deletes the part
-        partTbl.setItems(Inventory.getAllParts());      //Updates the table
+        int m = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this part?");
+
+        if(m == JOptionPane.YES_OPTION){
+
+            Part part = partTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
+            Inventory.deletePart(part);     //Deletes the part
+            partTbl.setItems(Inventory.getAllParts());      //Updates the table
+        }
     }
 
     /**
@@ -216,9 +222,15 @@ public class MainForm {
     @FXML
     public void deleteProduct(ActionEvent e) {
 
-        Product product = prodTbl.getSelectionModel().getSelectedItem();        //Gets the selected product
-        Inventory.deleteProduct(product);       //Deletes the product
-        prodTbl.setItems(Inventory.getAllProducts());       //Updates the table
+        int m = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this product?");
+
+        if(m == JOptionPane.YES_OPTION){
+            Product product = prodTbl.getSelectionModel().getSelectedItem();        //Gets the selected product
+            Inventory.deleteProduct(product);       //Deletes the product
+            prodTbl.setItems(Inventory.getAllProducts());       //Updates the table
+        }
+
+
     }
 
     /**

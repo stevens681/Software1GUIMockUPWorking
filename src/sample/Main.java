@@ -59,10 +59,10 @@ public class Main extends Application {
         Inventory.addPart(on);
         Inventory.addPart(en);
         Inventory.addPart(un);
-        Product oil = new Product(Inventory.getAllParts(), 1900, "Oil", 15.99, 50, 1, 100);
-        Product tire = new Product(Inventory.getAllParts(), 1231, "Tire", 10.99, 3, 1, 100);
-        Inventory.addProduct(oil);
-        Inventory.addProduct(tire);
+//        Product oil = new Product(null, 1900, "Oil", 15.99, 50, 1, 100);
+//        Product tire = new Product(Inventory.lookupProduct(1), 1231, "Tire", 10.99, 3, 1, 100);
+//        Inventory.addProduct(oil);
+//        Inventory.addProduct(tire);
         launch(args);
 
     }

@@ -104,9 +104,16 @@ public class Inventory {
     /**
      * Remove a product
      * @param selectedProduct The selected product
+     * @return If the part is deleted
      */
-    public static void deleteProduct(Product selectedProduct) {
-        allProducts.remove(selectedProduct);
+    public static boolean deleteProduct(Product selectedProduct) {
+        for(Product p : allProducts) {
+            if (p.getId() == selectedProduct.getId()) {
+                allProducts.remove(p);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

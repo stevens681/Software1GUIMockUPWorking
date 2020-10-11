@@ -21,7 +21,7 @@ public class ModifyProductForm {
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
-    private TableView<Product> prodTbl;     //Product Table
+    private TableView<Part> prodTbl;     //Product Table
     private final ObservableList<Part> items = FXCollections.observableArrayList();
     @FXML
     private TextField searchPart;           //Searchbar for product
@@ -94,16 +94,16 @@ public class ModifyProductForm {
 
         }
 
-        //This creates and fills the product tableView
-        if (tbls.toLowerCase().equals("product")) {
-            prodTbl.setItems(Inventory.getAllProducts());       //Gets all the products
+        //This creates and fills the associated tableView
+        if (tbls.toLowerCase().equals("ap")) {
+            prodTbl.setItems(Product.getAllAssociatedParts());       //Gets all the products
 
             for (int i = 0; i < 4; i++) {
                 if (areas[i].equals("price"))
                     colWidth = 175;
 
-                TableColumn column = new TableColumn(lblProduct[i]);
-                column.setCellValueFactory(new PropertyValueFactory<Product, String>(areas[i]));
+                TableColumn column = new TableColumn(lblPart[i]);
+                column.setCellValueFactory(new PropertyValueFactory<Part, String>(areas[i]));
                 column.setMinWidth(colWidth);
                 prodTbl.getColumns().addAll(column);        //Adds all the columns for the product table
             }
@@ -231,6 +231,18 @@ public class ModifyProductForm {
     }
 
     /**
+     * This will add an associated part
+     * */
+    public void addPart(ActionEvent e){
+        Part part = partTbl.getSelectionModel().getSelectedItem();
+        if(part == null)
+            showMessageDialog(null, "Please select a part to be added");
+        else
+            Product.addAssociatedPart(part);
+
+        prodTbl.setItems(Product.getAllAssociatedParts());
+    }
+    /**
      * This delete a selected part
      * Updates the table view
      * @param e ActionEvent
@@ -238,9 +250,9 @@ public class ModifyProductForm {
     @FXML
     public void deletePart(ActionEvent e) {
 
-        Part part = partTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
-        Inventory.deletePart(part);     //Deletes the part
-        partTbl.setItems(Inventory.getAllParts());      //Updates the table
+        Part part = prodTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
+        Product.deleteAssociatedPart(part);    //Deletes the part
+        prodTbl.setItems(Product.getAllAssociatedParts());      //Updates the table
     }
 
     /**
@@ -266,7 +278,7 @@ public class ModifyProductForm {
     public void initialize() {
 
         colCreator("part");
-        colCreator("product");
+        colCreator("ap");
 
     }
 }

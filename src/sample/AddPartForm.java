@@ -82,24 +82,30 @@ public class AddPartForm {
             int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
                     max = Integer.parseInt(maxText.getText());
 
-            //Depending what radio button is selected this will add a part to in house or outsourced
-            if (inHouRadio.isSelected()) {
 
-                int macID = Integer.parseInt(macCopText.getText());
-                InHouse newPart = new InHouse(id, name, price, inv, min, max, macID);
-                Inventory.addPart(newPart);
-            } else if (outRadio.isSelected()) {
+            if (min <= max) {
+                //Depending what radio button is selected this will add a part to in house or outsourced
+                if (inHouRadio.isSelected()) {
 
-                String copID = macCopText.getText();
+                    int macID = Integer.parseInt(macCopText.getText());
+                    InHouse newPart = new InHouse(id, name, price, inv, min, max, macID);
+                    Inventory.addPart(newPart);
+                } else if (outRadio.isSelected()) {
 
-                Outsourced newPart = new Outsourced(id, name, price, inv, min, max, copID);
-                Inventory.addPart(newPart);
+                    String copID = macCopText.getText();
+
+                    Outsourced newPart = new Outsourced(id, name, price, inv, min, max, copID);
+                    Inventory.addPart(newPart);
+                }
+                Main.callForms(e, "MainForm.fxml"); //Calls the main form back
             }
-
-            Main.callForms(e, "MainForm.fxml"); //Calls the main form back
-
+            else {
+                //Shows an error if min is higher than max and cleans the fields
+                showMessageDialog(null, "Minimal inventory cannot be grater than max");
+                minText.clear();
+                maxText.clear();
+            }
         }
-
     }
 
     /**

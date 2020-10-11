@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**This is the product
@@ -8,7 +9,7 @@ import javafx.collections.ObservableList;
 public class Product {
 
     //Variable Declaration
-    private ObservableList<Part> associatedParts;
+    private static ObservableList<Part> associatedParts= FXCollections.observableArrayList();
     private int id;
     private int stock;
     private int max;
@@ -18,7 +19,7 @@ public class Product {
 
     /**
      * This is a product and it's fields
-     * @param allProducts If is associated to a part
+     * @param associatedParts If is associated to a part
      * @param id The product id
      * @param name The product name
      * @param price The product price
@@ -26,7 +27,7 @@ public class Product {
      * @param min The product minimum stock level
      * @param max The product maximum stock level
      */
-    public Product(ObservableList<Part> allProducts, int id, String name, double price, int stock, int min, int max) {
+    public Product(ObservableList<Part> associatedParts, int id, String name, double price, int stock, int min, int max) {
 
         this.id = id;
         this.min = min;
@@ -34,6 +35,7 @@ public class Product {
         this.stock = stock;
         this.price = price;
         this.name = name;
+        this.associatedParts.addAll(associatedParts);
     }
 
     /**
@@ -124,23 +126,32 @@ public class Product {
      * This adds an associated part
      * @param part The part to be set
      */
-    public void addAssociatedPart(ObservableList<Part> part) {
-        this.associatedParts = part;
+    public static void addAssociatedPart(Part part) {
+        associatedParts.add(part);
     }
 
     /**
      * This disassociates a part
-     * @param selectedAssociatedPart The seleceted part to be deleted
+     * @param selectedAssociatedPart The selected part to be deleted
      * @return The part to be deleted
      */
-    public Part deleteAssociatedPart(Part selectedAssociatedPart) {
-        return selectedAssociatedPart;
+    public static boolean deleteAssociatedPart(Part selectedAssociatedPart) {
+
+        for(Part p : associatedParts){
+            if(p.getId() == selectedAssociatedPart.getId()){
+                associatedParts.remove(p);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * @return The associated parts
-     */
-    public ObservableList<Part> getAssociatedParts() {
+      */
+    public static ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
     }
+
+
 }
