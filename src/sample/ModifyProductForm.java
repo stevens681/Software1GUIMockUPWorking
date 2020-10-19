@@ -8,7 +8,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
+import javax.swing.*;
 import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -18,11 +20,13 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * @author Fernando Rosa
  */
 public class ModifyProductForm {
+    Product product;
+
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
     private TableView<Part> prodTbl;     //Product Table
-    private final ObservableList<Part> items = FXCollections.observableArrayList();
+    private ObservableList<Part> asPart;
     @FXML
     private TextField searchPart;           //Searchbar for product
     @FXML
@@ -37,6 +41,8 @@ public class ModifyProductForm {
     private TextField minText;
     @FXML
     private TextField idText;
+    @FXML
+    private Text logicError;
     public int id;        //This generates the ID
 
     /**
@@ -45,6 +51,7 @@ public class ModifyProductForm {
      */
     public void selectedProduct(Product product) {
 
+
         id = product.getId();
         idText.setText(Integer.toString(product.getId()));
         nameText.setText(product.getName());
@@ -52,6 +59,10 @@ public class ModifyProductForm {
         priceText.setText(Double.toString(product.getPrice()));
         maxText.setText(Integer.toString(product.getMax()));
         minText.setText(Integer.toString(product.getMin()));
+        this.asPart = product.getAllAssociatedParts();
+        prodTbl.setItems(asPart);
+
+
     }
 
     /**
@@ -74,7 +85,6 @@ public class ModifyProductForm {
     public void colCreator(String tbls) {
 
         String[] lblPart = {"Part Id", "Part Name", "Inventory Level", "Price// Cost per Unit"};            //Labels for the part table columns
-        String[] lblProduct = {"Product Id", "Product Name", "Inventory Level", "Price// Cost per Unit"};   //Labels for the product table columns
         String[] areas = {"id", "name", "stock", "price"};      //The values for the fields
         int colWidth = 125;     //Holds the first 3 width
 
@@ -96,7 +106,7 @@ public class ModifyProductForm {
 
         //This creates and fills the associated tableView
         if (tbls.toLowerCase().equals("ap")) {
-            prodTbl.setItems(Product.getAllAssociatedParts());       //Gets all the products
+            prodTbl.setItems(asPart);       //Gets all the products
 
             for (int i = 0; i < 4; i++) {
                 if (areas[i].equals("price"))
@@ -158,7 +168,6 @@ public class ModifyProductForm {
                     if (part.getName().toLowerCase().startsWith(search)) {
 
                         items.add(Inventory.lookupPart(part.getId()));  //Add to my empty list
-
                     }
                 }
             }
@@ -204,29 +213,26 @@ public class ModifyProductForm {
     @FXML
     public void saveProduct(ActionEvent a) throws IOException {
 
+        Product upProd;
         if (emptyField()) {
 
             //Variables declaration and assign
             String name = nameText.getText();
             double price = Double.parseDouble(priceText.getText());
+
             int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
                     max = Integer.parseInt(maxText.getText());
 
-            if (min >= max) {
-
-                //Shows an error if min is higher than max and cleans the fields
-                showMessageDialog(null, "Minimal inventory cannot be grater than max");
-                minText.clear();
-                maxText.clear();
-
-            } else {
-
-
-                Product upProd = new Product(items, id, name, price, inv, min, max);
-                Inventory.updateProduct(id, upProd);
-                Main.callForms(a, "MainForm.fxml"); //Calls the main form
-
+            if(asPart.isEmpty()){
+                upProd = new Product(id, name, price, inv, min, max);
             }
+            else {
+                upProd = new Product(asPart, id, name, price, inv, min, max);
+            }
+            Inventory.updateProduct(id, upProd);
+
+            Main.callForms(a, "MainForm.fxml"); //Calls the main form
+
         }
     }
 
@@ -237,10 +243,9 @@ public class ModifyProductForm {
         Part part = partTbl.getSelectionModel().getSelectedItem();
         if(part == null)
             showMessageDialog(null, "Please select a part to be added");
-        else
-            Product.addAssociatedPart(part);
-
-        prodTbl.setItems(Product.getAllAssociatedParts());
+        else {
+            asPart.add(part);
+        }
     }
     /**
      * This delete a selected part
@@ -250,25 +255,96 @@ public class ModifyProductForm {
     @FXML
     public void deletePart(ActionEvent e) {
 
-        Part part = prodTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
-        Product.deleteAssociatedPart(part);    //Deletes the part
-        prodTbl.setItems(Product.getAllAssociatedParts());      //Updates the table
+        int m = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this part?");
+
+        if(m == JOptionPane.YES_OPTION){
+            Part part = prodTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
+            Product p = Inventory.lookupProduct(id);        //Get the product
+
+            p.deleteAssociatedPart(part);
+        }
+
+        prodTbl.setItems(asPart);      //Updates the table
     }
 
     /**
-     * Checks for empty text fields
+     * Checks for empty text fields and logical errors
      * @return If any field is empty
      */
     private boolean emptyField() {
 
-        if (nameText.getText().isEmpty() || invText.getText().isEmpty() ||
-                priceText.getText().isEmpty() || maxText.getText().isEmpty()
-                || minText.getText().isEmpty()) {
+        int max=0, min=0, inv=0;
+        String txt = "";
+        boolean flag = true;
 
-            showMessageDialog(null, "Please fill all the fields");
-            return false;
-        } else
-            return true;
+        if(nameText.getText().isEmpty()) {
+            txt += "The product name field is empty \n";
+            flag = false;
+        }
+        if(invText.getText().isEmpty()){
+            txt += "The product inventory field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                inv = Integer.parseInt(invText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if(priceText.getText().isEmpty()){
+            txt += "The product price field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                Double.parseDouble(priceText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product price must be a double \n";
+                flag = false;
+            }
+        }
+        if(minText.getText().isEmpty()){
+            txt += "The product min field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                min = Integer.parseInt(minText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product min inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if(maxText.getText().isEmpty()){
+            txt += "The product max field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                max = Integer.parseInt(maxText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product max inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if (min > max){
+            txt += "The product min inventory must be less than max inventory \n";
+            flag = false;
+        }
+        if (inv > max){
+            txt += "The product inventory must be less than max inventory \n";
+            flag = false;
+        }
+
+            logicError.setText(txt);
+
+        return flag;
     }
 
     /**
@@ -276,6 +352,7 @@ public class ModifyProductForm {
      */
     @FXML
     public void initialize() {
+
 
         colCreator("part");
         colCreator("ap");

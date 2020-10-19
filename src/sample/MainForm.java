@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * @author Fernando Rosa
  */
 public class MainForm {
-
+    Product product;
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
@@ -33,6 +34,9 @@ public class MainForm {
     private TextField searchPart;           //Searchbar for part
     @FXML
     private TextField searchProd;           //Searchbar for product
+    @FXML
+    private Text logicError;
+
 
 
     /**
@@ -224,13 +228,17 @@ public class MainForm {
 
         int m = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this product?");
 
-        if(m == JOptionPane.YES_OPTION){
-            Product product = prodTbl.getSelectionModel().getSelectedItem();        //Gets the selected product
-            Inventory.deleteProduct(product);       //Deletes the product
-            prodTbl.setItems(Inventory.getAllProducts());       //Updates the table
+        Product p = prodTbl.getSelectionModel().getSelectedItem();        //Gets the selected product
+
+        if(p.getAllAssociatedParts().isEmpty()){
+            if(m == JOptionPane.YES_OPTION){
+
+                Inventory.deleteProduct(p);       //Deletes the product
+                prodTbl.setItems(Inventory.getAllProducts());       //Updates the table
+            }
+        }else{
+            logicError.setText("This product has an associated part");
         }
-
-
     }
 
     /**

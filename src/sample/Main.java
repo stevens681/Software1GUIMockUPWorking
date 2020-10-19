@@ -11,8 +11,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * This is the main class
+ * For this version, all the data is held in memory for the next version would be better if all the data is outputted into an external database so it could be kept after the memory is dumped.
+ * Some aesthetics changes could help the next version such as:
+ * <li>Loading screen to hide the loading of data when is a lot of data importing.</li>
+ *<li>Modern style and a different font for better visual appeal.</li>
+ *
  * @author Fernando Rosa
+ * @version 1.0
+ *
  */
 public class Main extends Application {
 
@@ -59,10 +65,10 @@ public class Main extends Application {
         Inventory.addPart(on);
         Inventory.addPart(en);
         Inventory.addPart(un);
-//        Product oil = new Product(null, 1900, "Oil", 15.99, 50, 1, 100);
-//        Product tire = new Product(Inventory.lookupProduct(1), 1231, "Tire", 10.99, 3, 1, 100);
-//        Inventory.addProduct(oil);
-//        Inventory.addProduct(tire);
+        Product oil = new Product(1, "Oil", 15.99, 50, 1, 100);
+        Product tire = new Product(2,"Tire", 10.99, 3, 1, 100);
+        Inventory.addProduct(oil);
+        Inventory.addProduct(tire);
         launch(args);
 
     }

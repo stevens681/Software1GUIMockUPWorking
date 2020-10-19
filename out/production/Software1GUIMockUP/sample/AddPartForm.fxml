@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddPartForm">
+
+<AnchorPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddPartForm">
     <children>
         <Text layoutX="54.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Part">
             <font>
-                <Font name="System Bold" size="18.0"/>
+                <Font name="System Bold" size="18.0" />
             </font>
         </Text>
-        <RadioButton fx:id="outRadio" layoutX="300.0" layoutY="95.0" mnemonicParsing="false" onAction="#outRadioBtn"
-                     text="Outsourced"/>
-        <RadioButton fx:id="inHouRadio" layoutX="195.0" layoutY="95.0" mnemonicParsing="false" onAction="#inRadioBtn"
-                     text="In-House"/>
-        <TextField fx:id="idText" disable="true" editable="false" layoutX="195.0" layoutY="149.0"
-                   promptText="Auto Gen- Disable">
+        <RadioButton fx:id="outRadio" layoutX="300.0" layoutY="95.0" mnemonicParsing="false" onAction="#outRadioBtn" text="Outsourced" />
+        <RadioButton fx:id="inHouRadio" layoutX="195.0" layoutY="95.0" mnemonicParsing="false" onAction="#inRadioBtn" text="In-House" />
+        <TextField fx:id="idText" disable="true" editable="false" layoutX="195.0" layoutY="149.0" promptText="Auto Gen- Disable">
             <font>
-                <Font name="System Italic" size="12.0"/>
+                <Font name="System Italic" size="12.0" />
             </font>
         </TextField>
-        <TextField fx:id="nameText" layoutX="195.0" layoutY="193.0"/>
-        <TextField fx:id="invText" layoutX="195.0" layoutY="238.0"/>
-        <TextField fx:id="priceText" layoutX="195.0" layoutY="283.0"/>
-        <TextField fx:id="maxText" layoutX="195.0" layoutY="328.0"/>
-        <TextField fx:id="macCopText" layoutX="195.0" layoutY="373.0"/>
-        <TextField fx:id="minText" layoutX="418.0" layoutY="328.0"/>
-        <Text layoutX="69.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID"/>
-        <Text layoutX="69.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name"/>
-        <Text layoutX="69.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inv"/>
-        <Text layoutX="69.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price/Cost"/>
-        <Text layoutX="69.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max"/>
-        <Text fx:id="inOutLabel" layoutX="69.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Machine ID"/>
-        <Text layoutX="372.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Min"/>
-        <Button layoutX="318.0" layoutY="493.0" mnemonicParsing="false" onAction="#saveBtn" prefHeight="30.0"
-                prefWidth="75.0" text="Save"/>
-        <Button layoutX="418.0" layoutY="493.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="30.0"
-                prefWidth="75.0" text="Cancel"/>
+        <TextField fx:id="nameText" layoutX="195.0" layoutY="193.0" />
+        <TextField fx:id="invText" layoutX="195.0" layoutY="238.0" />
+        <TextField fx:id="priceText" layoutX="195.0" layoutY="283.0" />
+        <TextField fx:id="maxText" layoutX="195.0" layoutY="328.0" />
+        <TextField fx:id="macCopText" layoutX="195.0" layoutY="373.0" />
+        <TextField fx:id="minText" layoutX="418.0" layoutY="328.0" />
+        <Text layoutX="69.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+        <Text layoutX="69.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+        <Text layoutX="69.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inv" />
+        <Text layoutX="69.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price/Cost" />
+        <Text layoutX="69.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max" />
+        <Text fx:id="inOutLabel" layoutX="69.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Machine ID" />
+        <Text layoutX="372.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Min" />
+        <Button layoutX="318.0" layoutY="493.0" mnemonicParsing="false" onAction="#saveBtn" prefHeight="30.0" prefWidth="75.0" text="Save" />
+        <Button layoutX="418.0" layoutY="493.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="30.0" prefWidth="75.0" text="Cancel" />
+        <Text fx:id="logicError" layoutX="39.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="260.08203125" />
     </children>
 </AnchorPane>

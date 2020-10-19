@@ -6,6 +6,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddProductForm">
     <children>
+      <Pane layoutX="25.0" layoutY="25.0" prefHeight="650.0" prefWidth="1250.0" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-border-width: 1; -fx-border-style: solid;" />
         <Pane prefHeight="700.0" prefWidth="1300.0">
             <children>
                 <TableView fx:id="partTbl" layoutX="695.0" layoutY="90.0" prefHeight="200.0" prefWidth="550.0" />
@@ -17,7 +18,7 @@
                 <Button layoutX="1175.0" layoutY="616.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="30.0" prefWidth="75.0" text="Cancel" />
                 <Button layoutX="1090.0" layoutY="572.0" mnemonicParsing="false" onAction="#deletePart" prefHeight="30.0" prefWidth="160.0" text="Remove Associated Part" />
                 <TextField fx:id="searchPart" layoutX="1068.0" layoutY="46.0" onAction="#searchPart" prefHeight="30.0" prefWidth="183.0" promptText="Search by Part ID or Name" />
-
+                <Text fx:id="logicError" layoutX="67.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             </children>
         </Pane>
         <Text layoutX="54.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Product">

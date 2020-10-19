@@ -37,6 +37,8 @@ public class AddPartForm {
     private TextField minText;
     @FXML
     private TextField macCopText;
+    @FXML
+    private Text logicError;
 
     int id = Inventory.getAllParts().size() + 1;        //This generates the ID
 
@@ -49,7 +51,7 @@ public class AddPartForm {
 
         inOutLabel.setText("Machine ID");       //Changes the label name
         outRadio.setSelected(false);            //Deselect Outsourced radio
-
+        macCopText.clear();
     }
 
     /**
@@ -61,7 +63,7 @@ public class AddPartForm {
 
         inOutLabel.setText("Company Name");     //Changes the label name
         inHouRadio.setSelected(false);          //Deselect In-House radio
-
+        macCopText.clear();
     }
 
     /**
@@ -79,32 +81,40 @@ public class AddPartForm {
             //Variables declaration
             String name = nameText.getText();
             double price = Double.parseDouble(priceText.getText());
-            int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
-                    max = Integer.parseInt(maxText.getText());
 
+            try{
+                int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
+                        max = Integer.parseInt(maxText.getText());
 
-            if (min <= max) {
-                //Depending what radio button is selected this will add a part to in house or outsourced
-                if (inHouRadio.isSelected()) {
+                if (min <= max) {
+                    //Depending what radio button is selected this will add a part to in house or outsourced
+                    if (inHouRadio.isSelected()) {
 
-                    int macID = Integer.parseInt(macCopText.getText());
-                    InHouse newPart = new InHouse(id, name, price, inv, min, max, macID);
-                    Inventory.addPart(newPart);
-                } else if (outRadio.isSelected()) {
+                        int macID = Integer.parseInt(macCopText.getText());
+                        InHouse newPart = new InHouse(id, name, price, inv, min, max, macID);
+                        Inventory.addPart(newPart);
+                    } else if (outRadio.isSelected()) {
 
-                    String copID = macCopText.getText();
+                        String copID = macCopText.getText();
 
-                    Outsourced newPart = new Outsourced(id, name, price, inv, min, max, copID);
-                    Inventory.addPart(newPart);
+                        Outsourced newPart = new Outsourced(id, name, price, inv, min, max, copID);
+                        Inventory.addPart(newPart);
+                    }
+                    Main.callForms(e, "MainForm.fxml"); //Calls the main form back
                 }
-                Main.callForms(e, "MainForm.fxml"); //Calls the main form back
+                else {
+                    //Shows an error if min is higher than max and cleans the fields
+                    showMessageDialog(null, "Minimal inventory cannot be grater than max");
+                    minText.clear();
+                    maxText.clear();
+                }
+
+            }catch (NumberFormatException exception){
+                showMessageDialog(null, exception.getMessage()+" This value needs to be n integer");
+
             }
-            else {
-                //Shows an error if min is higher than max and cleans the fields
-                showMessageDialog(null, "Minimal inventory cannot be grater than max");
-                minText.clear();
-                maxText.clear();
-            }
+
+
         }
     }
 
@@ -126,14 +136,101 @@ public class AddPartForm {
      */
     private boolean emptyField() {
 
-        if (nameText.getText().isEmpty() || invText.getText().isEmpty() ||
-                priceText.getText().isEmpty() || maxText.getText().isEmpty() || minText.getText().isEmpty()
-                || macCopText.getText().isEmpty()) {
+        int max=0, min=0, inv=0;
+        String txt = "";
+        boolean flag = true;
 
-            showMessageDialog(null, "Please fill all the fields");
-            return false;
-        } else
-            return true;
+        if(nameText.getText().isEmpty()) {
+            txt += "The product name field is empty \n";
+            flag = false;
+        }
+        if(invText.getText().isEmpty()){
+            txt += "The product inventory field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                inv = Integer.parseInt(invText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if(priceText.getText().isEmpty()){
+            txt += "The product price field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                Double.parseDouble(priceText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product price must be a double \n";
+                flag = false;
+            }
+        }
+        if(minText.getText().isEmpty()){
+            txt += "The product min field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                min = Integer.parseInt(minText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product min inventory must be an integer \n";
+                flag = false;
+            }
+        }
+
+        if(inHouRadio.isSelected()){
+            if(macCopText.getText().isEmpty()){
+                txt += "The machine ID field is empty\n";
+                flag = false;
+            }
+            else {
+                try{
+                    Integer.parseInt(macCopText.getText());
+                }
+                catch (NumberFormatException exception){
+                    txt += "The machine ID needs to be an integer\n";
+                    flag = false;
+
+                }
+            }
+        }
+        if(outRadio.isSelected()){
+            if(macCopText.getText().isEmpty()){
+                txt += "The company name field is empty\n";
+                flag = false;
+            }
+        }
+        if(maxText.getText().isEmpty()){
+            txt += "The product max field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                max = Integer.parseInt(maxText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product max inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if (min > max){
+            txt += "The product min inventory must be less than max inventory \n";
+            flag = false;
+        }
+        if (inv > max){
+            txt += "The product inventory must be less than max inventory \n";
+            flag = false;
+        }
+        logicError.setText(txt);
+
+        return flag;
+
     }
 
     /**
@@ -143,9 +240,5 @@ public class AddPartForm {
     public void initialize() {
 
         inHouRadio.setSelected(true);
-
-
     }
-
-
 }

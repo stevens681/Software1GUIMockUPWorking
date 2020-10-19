@@ -1,10 +1,6 @@
 package sample;
 /**
  * Supplied class Part.java
- */
-
-/**
- *
  * @author Fernando Rosa
  */
 public class Part {

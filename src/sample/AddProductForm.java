@@ -8,7 +8,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
+import javax.swing.*;
 import java.io.IOException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -19,11 +21,12 @@ import static javax.swing.JOptionPane.showMessageDialog;
  */
 public class AddProductForm {
 
+    Product product;
     @FXML
     private TableView<Part> partTbl;        //Part's Table
     @FXML
     private TableView<Part> prodTbl;     //Product Table
-    private final ObservableList<Part> items = FXCollections.observableArrayList();
+    private final ObservableList<Part> asPart = FXCollections.observableArrayList();
     @FXML
     private TextField searchPart;           //Searchbar for product
     @FXML
@@ -36,7 +39,11 @@ public class AddProductForm {
     private TextField maxText;
     @FXML
     private TextField minText;
+    @FXML
+    private Text logicError;
+
     int id = Inventory.getAllProducts().size() + 1;        //This generates the ID
+
 
 
     /**
@@ -48,7 +55,6 @@ public class AddProductForm {
     private void cancelBtn(ActionEvent e) throws IOException {
 
         Main.callForms(e, "MainForm.fxml"); //Calls the main form
-
     }
 
     /**
@@ -76,12 +82,11 @@ public class AddProductForm {
                 column.setMinWidth(colWidth);
                 partTbl.getColumns().addAll(column);        //Adds all the columns for the part's table
             }
-
         }
 
         //This creates and fills the associated tableView
         if (tbls.toLowerCase().equals("ap")) {
-            prodTbl.setItems(Product.getAllAssociatedParts());       //Gets all the products
+            prodTbl.setItems(asPart);       //Gets all the products
 
             for (int i = 0; i < 4; i++) {
                 if (areas[i].equals("price"))
@@ -188,6 +193,8 @@ public class AddProductForm {
     @FXML
     public void saveProduct(ActionEvent e) throws IOException {
 
+        Product newProd;
+
         if (emptyField()) {
 
             //Variables declaration and assign
@@ -196,21 +203,17 @@ public class AddProductForm {
             int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
                     max = Integer.parseInt(maxText.getText());
 
-            if (min >= max) {
-
-                //Shows an error if min is higher than max and cleans the fields
-                showMessageDialog(null, "Minimal inventory cannot be grater than max");
-                minText.clear();
-                maxText.clear();
-
-            } else {
-
-                //Associates all the parts to the product and the creates it
-                Product newProd = new Product(items, id, name, price, inv, min, max);
-                Inventory.addProduct(newProd);
-                Main.callForms(e, "MainForm.fxml"); //Calls the main form
-
+            //Associates all the parts to the product and the creates it
+            if(asPart.isEmpty()){
+                newProd = new Product(id, name, price, inv, min, max);
             }
+            else {
+                newProd = new Product(asPart, id, name, price, inv, min, max);
+            }
+            Inventory.addProduct(newProd);
+
+            Main.callForms(e, "MainForm.fxml"); //Calls the main form
+
         }
     }
 
@@ -222,10 +225,10 @@ public class AddProductForm {
         Part part = partTbl.getSelectionModel().getSelectedItem();
         if(part == null)
             showMessageDialog(null, "Please select a part to be added");
-        else
-           Product.addAssociatedPart(part);
+        else {
 
-        prodTbl.setItems(Product.getAllAssociatedParts());
+            asPart.add(part);
+        }
     }
 
     /**
@@ -236,25 +239,96 @@ public class AddProductForm {
     @FXML
     public void deletePart(ActionEvent e) {
 
-        Part part = prodTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
-        Product.deleteAssociatedPart(part);    //Deletes the part
-        prodTbl.setItems(Product.getAllAssociatedParts());      //Updates the table
+        int m = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this part?");
+
+        if(m == JOptionPane.YES_OPTION){
+            Part part = prodTbl.getSelectionModel().getSelectedItem();      //Gets the selected part
+            asPart.remove(part);    //Deletes the part
+
+        }
+
+        prodTbl.setItems(asPart);      //Updates the table
     }
 
     /**
-     * Checks for empty text fields
+     * Checks for empty text fields and logical errors
      * @return If any field is empty
      */
     private boolean emptyField() {
 
-        if (nameText.getText().isEmpty() || invText.getText().isEmpty() ||
-                priceText.getText().isEmpty() || maxText.getText().isEmpty()
-                || minText.getText().isEmpty()) {
 
-            showMessageDialog(null, "Please fill all the fields");
-            return false;
-        } else
-            return true;
+        int max=0, min=0, inv=0;
+        String txt = "";
+        boolean flag = true;
+
+        if(nameText.getText().isEmpty()) {
+            txt += "The product name field is empty \n";
+            flag = false;
+        }
+        if(invText.getText().isEmpty()){
+            txt += "The product inventory field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                inv = Integer.parseInt(invText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if(priceText.getText().isEmpty()){
+            txt += "The product price field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                Double.parseDouble(priceText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product price must be a double \n";
+                flag = false;
+            }
+        }
+        if(minText.getText().isEmpty()){
+            txt += "The product min field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                min = Integer.parseInt(minText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product min inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if(maxText.getText().isEmpty()){
+            txt += "The product max field is empty \n";
+            flag = false;
+        }
+        else {
+            try{
+                max = Integer.parseInt(maxText.getText());
+            }
+            catch (NumberFormatException exception){
+                txt += "The product max inventory must be an integer \n";
+                flag = false;
+            }
+        }
+        if (min > max){
+            txt += "The product min inventory must be less than max inventory \n";
+            flag = false;
+        }
+        if (inv > max){
+            txt += "The product inventory must be less than max inventory \n";
+            flag = false;
+        }
+
+        logicError.setText(txt);
+
+        return flag;
     }
 
     /**
@@ -265,6 +339,5 @@ public class AddProductForm {
 
         colCreator("part");
         colCreator("ap");
-
     }
 }
