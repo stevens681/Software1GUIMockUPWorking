@@ -39,5 +39,6 @@
                 prefWidth="75.0" text="Save"/>
         <Button layoutX="418.0" layoutY="493.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="30.0"
                 prefWidth="75.0" text="Cancel"/>
+        <Text fx:id="logicError" layoutX="39.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="260.08203125" />
     </children>
 </AnchorPane>

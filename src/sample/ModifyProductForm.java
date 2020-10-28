@@ -222,7 +222,11 @@ public class ModifyProductForm {
 
             int inv = Integer.parseInt(invText.getText()), min = Integer.parseInt(minText.getText()),
                     max = Integer.parseInt(maxText.getText());
-
+            /**
+             * When I was tried to modify the product and assign associated parts
+             * if the product did not have an associated part was creating a run time error
+             * but i created another a secondary constructor to deal with empty associated parts
+             */
             if(asPart.isEmpty()){
                 upProd = new Product(id, name, price, inv, min, max);
             }
@@ -238,8 +242,9 @@ public class ModifyProductForm {
 
     /**
      * This will add an associated part
+     * @param a ActionEvent
      * */
-    public void addPart(ActionEvent e){
+    public void addPart(ActionEvent a){
         Part part = partTbl.getSelectionModel().getSelectedItem();
         if(part == null)
             showMessageDialog(null, "Please select a part to be added");

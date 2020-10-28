@@ -41,6 +41,16 @@ public class Product {
         this.name = name;
     }
 
+    /**
+     * This is a product and it's fields with associated parts
+     * @param asParts The associated parts
+     * @param id The product id
+     * @param name The product name
+     * @param price The product price
+     * @param stock The product stock level
+     * @param min The product minimum stock level
+     * @param max The product maximum stock level
+     */
     public Product(ObservableList asParts, int id,String name, double price, int stock, int min, int max){
 
         this.associatedParts = asParts;

@@ -13,9 +13,10 @@ import java.io.IOException;
 /**
  * For this version, all the data is held in memory for the next version would be better if all the data is outputted into an external database so it could be kept after the memory is dumped.
  * Some aesthetics changes could help the next version such as:
+ * <ul>
  * <li>Loading screen to hide the loading of data when is a lot of data importing.</li>
  *<li>Modern style and a different font for better visual appeal.</li>
- *
+ *</ul>
  * @author Fernando Rosa
  * @version 1.0
  *
@@ -38,6 +39,7 @@ public class Main extends Application {
      * It will set the size of the form
      * @param actionEvent ActionEvent
      * @param loadForm Form to be load
+     * @throws IOException Any run time error
      */
     public static void callForms(ActionEvent actionEvent, String loadForm) throws IOException {
 

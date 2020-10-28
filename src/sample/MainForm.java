@@ -142,6 +142,12 @@ public class MainForm {
 
             //Goes through the list
             for (Part part : Inventory.getAllParts()) {
+                /**
+                 * In this part of my code I was facing a run time error when I try to assign the search
+                 * to a variable I did not know what type of variable use, so what I did was use Exceptions
+                 * and try to assign it to a integer variable if that fails used the catch exception to assign it to
+                 * a string, then i can get the result to search the table.
+                 */
                 try {   //Tries to check if the value from the text field is an integer or String
 
                     int id = Integer.parseInt(search);  //Assigns the integer

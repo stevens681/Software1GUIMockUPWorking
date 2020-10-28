@@ -132,7 +132,10 @@ public class AddProductForm {
                         partTbl.getSelectionModel().select(Inventory.lookupPart(part.getId()));     //Selects the table row
                         searchById = true;
                         notFound = false;
-
+                        /**
+                         * After I found the part it was this would continue the loop
+                         * so I used the break
+                         */
                         break;
                     } else {
                         searchById = true;
